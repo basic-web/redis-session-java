@@ -22,3 +22,20 @@ redis-session-java implement session management for java web application.
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     ```
+    
+1. Access session from jsp
+
+    ```
+    <c:out value="${requestScope.session.nickName}" />
+    ```
+
+1. Access session from controller
+
+    ```
+    import edu.nwnu.ququzone.session.Session;
+    import edu.nwnu.ququzone.session.SessionFilter;
+    
+    ...
+    
+    Session userSession = (Session) request.getAttribute(SessionFilter.SESSION_KEY);
+    ```
