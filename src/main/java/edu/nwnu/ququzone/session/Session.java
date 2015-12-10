@@ -104,13 +104,13 @@ public class Session implements Map<String, String> {
     @Override
     public void putAll(Map<? extends String, ? extends String> m) {
         this.saved = false;
-        this.putAll(m);
+        data.putAll(m);
     }
 
     @Override
     public void clear() {
         this.saved = false;
-        this.clear();
+        data.clear();
     }
 
     @Override
