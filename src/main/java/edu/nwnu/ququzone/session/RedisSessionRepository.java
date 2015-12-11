@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisSessionRepository implements SessionRepository {
     private static Logger LOG = LoggerFactory.getLogger(RedisSessionRepository.class);
 
-    private int timeout = (int) TimeUnit.HOURS.toSeconds(24);
+    private int timeout = (int) TimeUnit.DAYS.toSeconds(10);
 
     private String prefix = "sessions:";
 
@@ -24,6 +24,16 @@ public class RedisSessionRepository implements SessionRepository {
 
     public RedisSessionRepository(JedisPool pool) {
         this.pool = pool;
+    }
+
+    public void setPrefix(String prefix) {
+        if (prefix != null && !"".equals(prefix)) {
+            this.prefix = prefix;
+        }
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 
     @Override

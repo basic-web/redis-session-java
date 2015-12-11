@@ -5,7 +5,7 @@ redis-session-java implement session management for java web application.
 ## Basic Usage
 
 1. Edit `/etc/hosts` file add redis server host
-    
+
     ```
     127.0.0.1 redis.host.name
     ```
@@ -16,13 +16,25 @@ redis-session-java implement session management for java web application.
     <filter>
         <filter-name>sessionFilter</filter-name>
         <filter-class>edu.nwnu.ququzone.session.SessionFilter</filter-class>
+        <init-param>
+            <param-name>factory</param-name>
+            <param-value>edu.nwnu.ququzone.session.DefaultSessionRepositoryFactory</param-value>
+        </init-param>
+        <init-param>
+            <param-name>sessionKey</param-name>
+            <param-value>session</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cookieName</param-name>
+            <param-value>sessionId</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
         <filter-name>sessionFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     ```
-    
+
 1. Access session from jsp
 
     ```
@@ -34,8 +46,8 @@ redis-session-java implement session management for java web application.
     ```
     import edu.nwnu.ququzone.session.Session;
     import edu.nwnu.ququzone.session.SessionFilter;
-    
+
     ...
-    
+
     Session userSession = (Session) request.getAttribute(SessionFilter.SESSION_KEY);
     ```

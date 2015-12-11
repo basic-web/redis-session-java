@@ -1,5 +1,8 @@
 package edu.nwnu.ququzone.session;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +14,8 @@ import java.util.*;
  * @author Yang XuePing
  */
 public class Session implements Map<String, String> {
+    private static final Logger LOG = LoggerFactory.getLogger(Session.class);
+
     private String sessionId;
 
     private boolean saved = true;
@@ -19,9 +24,9 @@ public class Session implements Map<String, String> {
 
     private SessionRepository repository;
 
-    Session(HttpServletRequest request,
+    Session(SessionRepository repository, HttpServletRequest request,
             HttpServletResponse response, String cookieName) {
-        this.repository = SessionRepositoryFactory.getSessionRepository();
+        this.repository = repository;
         data = new HashMap<>();
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {

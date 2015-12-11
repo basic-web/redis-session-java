@@ -11,19 +11,22 @@ import javax.servlet.http.HttpServletResponse;
 public class SessionBuilder {
     private String cookieName = "sessionId";
 
-    private String prefix = "sessionId";
+    private SessionRepository repository = new DefaultSessionRepositoryFactory().getSessionRepository();
 
-    public SessionBuilder setPrefix(String prefix) {
-        this.prefix = prefix;
-        return this;
-    }
 
     public SessionBuilder setCookieName(String cookieName) {
         this.cookieName = cookieName;
         return this;
     }
 
+    public SessionBuilder setSessionRepository(SessionRepository repository) {
+        if (repository != null) {
+            this.repository = repository;
+        }
+        return this;
+    }
+
     public Session createSession(HttpServletRequest request, HttpServletResponse response) {
-        return new Session(request, response, cookieName);
+        return new Session(repository, request, response, cookieName);
     }
 }
