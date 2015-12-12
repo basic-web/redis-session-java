@@ -1,4 +1,4 @@
-package edu.nwnu.ququzone.session;
+package com.github.ququzone.session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

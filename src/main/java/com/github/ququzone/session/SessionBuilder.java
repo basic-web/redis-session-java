@@ -1,4 +1,4 @@
-package edu.nwnu.ququzone.session;
+package com.github.ququzone.session;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

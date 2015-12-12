@@ -15,10 +15,10 @@ redis-session-java implement session management for java web application.
     ```
     <filter>
         <filter-name>sessionFilter</filter-name>
-        <filter-class>edu.nwnu.ququzone.session.SessionFilter</filter-class>
+        <filter-class>com.github.ququzone.session.SessionFilter</filter-class>
         <init-param>
             <param-name>factory</param-name>
-            <param-value>edu.nwnu.ququzone.session.DefaultSessionRepositoryFactory</param-value>
+            <param-value>com.github.ququzone.session.DefaultSessionRepositoryFactory</param-value>
         </init-param>
         <init-param>
             <param-name>sessionKey</param-name>
@@ -44,8 +44,8 @@ redis-session-java implement session management for java web application.
 1. Access session from controller
 
     ```
-    import edu.nwnu.ququzone.session.Session;
-    import edu.nwnu.ququzone.session.SessionFilter;
+    import com.github.ququzone.session.Session;
+    import com.github.ququzone.session.SessionFilter;
 
     ...
 
