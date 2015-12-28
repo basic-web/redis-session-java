@@ -8,6 +8,8 @@ import java.util.Map;
  * @author Yang XuePing
  */
 public interface SessionRepository {
+    int getTimeout();
+
     void save(String id, Map<String, String> session);
 
     Map<String, String> get(String id);

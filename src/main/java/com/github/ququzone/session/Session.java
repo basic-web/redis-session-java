@@ -40,9 +40,12 @@ public class Session implements Map<String, String> {
         if (sessionId == null || "".equals(cookieName)
                 || !lookupSession()) {
             create();
-            response.setHeader("SET-COOKIE", cookieName + "=" + sessionId
-                    + "; Path=/; HttpOnly");
         }
+        Date expires = new Date();
+        expires.setTime(expires.getTime() + repository.getTimeout() * 1000);
+        response.setHeader("SET-COOKIE", cookieName + "=" + sessionId
+                + ";Path=/;expires=" + expires.toGMTString() +
+                ";HttpOnly");
     }
 
     private void create() {
@@ -51,7 +54,7 @@ public class Session implements Map<String, String> {
 
     private boolean lookupSession() {
         Map<String, String> data = repository.get(sessionId);
-        if (data == null || data.isEmpty()) {
+        if (data == null) {
             return false;
         }
         this.data.putAll(data);

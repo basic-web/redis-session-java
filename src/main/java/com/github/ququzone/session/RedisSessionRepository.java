@@ -32,6 +32,11 @@ public class RedisSessionRepository implements SessionRepository {
         }
     }
 
+    @Override
+    public int getTimeout() {
+        return this.timeout;
+    }
+
     public void setTimeout(int timeout) {
         this.timeout = timeout;
     }
