@@ -26,7 +26,11 @@ redis-session-java implement session management for java web application.
         </init-param>
         <init-param>
             <param-name>cookieName</param-name>
-            <param-value>sessionId</param-value>
+            <param-value>sessionid</param-value>
+        </init-param>
+        <init-param>
+            <param-name>httpOnly</param-name>
+            <param-value>true</param-value>
         </init-param>
     </filter>
     <filter-mapping>

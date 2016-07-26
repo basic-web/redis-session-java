@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.*;
 
 /**
@@ -14,8 +17,6 @@ import java.util.*;
  * @author Yang XuePing
  */
 public class Session implements Map<String, String> {
-    private static final Logger LOG = LoggerFactory.getLogger(Session.class);
-
     private String sessionId;
 
     private boolean saved = true;
@@ -25,7 +26,7 @@ public class Session implements Map<String, String> {
     private SessionRepository repository;
 
     Session(SessionRepository repository, HttpServletRequest request,
-            HttpServletResponse response, String cookieName) {
+            HttpServletResponse response, String cookieName, boolean httpOnly) {
         this.repository = repository;
         data = new HashMap<>();
         Cookie[] cookies = request.getCookies();
@@ -43,9 +44,12 @@ public class Session implements Map<String, String> {
         }
         Date expires = new Date();
         expires.setTime(expires.getTime() + repository.getTimeout() * 1000);
-        response.setHeader("SET-COOKIE", cookieName + "=" + sessionId
-                + ";Path=/;expires=" + expires.toGMTString() +
-                ";HttpOnly");
+        StringBuilder cookie = new StringBuilder(cookieName + "=" + sessionId
+                + ";Path=/;expires=" + expires.toGMTString());
+        if (httpOnly) {
+            cookie.append(";HttpOnly");
+        }
+        response.setHeader("SET-COOKIE", cookie.toString());
     }
 
     private void create() {

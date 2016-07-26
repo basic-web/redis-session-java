@@ -17,6 +17,7 @@ public class SessionFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(SessionFilter.class);
     public static String SESSION_KEY = "session";
     private String cookieName = "sessionId";
+    private Boolean httpOnly = true;
     private SessionRepositoryFactory repositoryFactory;
 
     @Override
@@ -40,13 +41,18 @@ public class SessionFilter implements Filter {
         if (cookieName != null && !"".equals(cookieName)) {
             this.cookieName = cookieName;
         }
+        String httpOnly = filterConfig.getInitParameter("httpOnly");
+        if (httpOnly != null && !"".equals(httpOnly)) {
+            this.httpOnly = Boolean.valueOf(httpOnly);
+        }
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
         Session session = new SessionBuilder().setSessionRepository(repositoryFactory.getSessionRepository())
-                .setCookieName(cookieName).createSession((HttpServletRequest) request, (HttpServletResponse) response);
+                .setCookieName(cookieName).setHttpOnly(httpOnly)
+                .createSession((HttpServletRequest) request, (HttpServletResponse) response);
         request.setAttribute(SESSION_KEY, session);
         chain.doFilter(request, response);
         session.save();

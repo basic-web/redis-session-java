@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 public class SessionBuilder {
     private String cookieName = "sessionId";
 
-    private SessionRepository repository = new DefaultSessionRepositoryFactory().getSessionRepository();
+    private Boolean httpOnly = true;
 
+    private SessionRepository repository = new DefaultSessionRepositoryFactory().getSessionRepository();
 
     public SessionBuilder setCookieName(String cookieName) {
         this.cookieName = cookieName;
@@ -26,7 +27,12 @@ public class SessionBuilder {
         return this;
     }
 
+    public SessionBuilder setHttpOnly(Boolean httpOnly) {
+        this.httpOnly = httpOnly;
+        return this;
+    }
+
     public Session createSession(HttpServletRequest request, HttpServletResponse response) {
-        return new Session(repository, request, response, cookieName);
+        return new Session(repository, request, response, cookieName, httpOnly);
     }
 }
