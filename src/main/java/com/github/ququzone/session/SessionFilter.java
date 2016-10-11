@@ -15,6 +15,7 @@ import java.io.IOException;
  */
 public class SessionFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(SessionFilter.class);
+    public static String SESSION_REPOSITORY_FACTORY = "SESSION_REPOSITORY_FACTORY";
     public static String SESSION_KEY = "session";
     private String cookieName = "sessionId";
     private Boolean httpOnly = true;
@@ -33,6 +34,8 @@ public class SessionFilter implements Filter {
         if (repositoryFactory == null) {
             repositoryFactory = new DefaultSessionRepositoryFactory();
         }
+        filterConfig.getServletContext().setAttribute(SESSION_REPOSITORY_FACTORY, repositoryFactory);
+        
         String sessionKey = filterConfig.getInitParameter("sessionKey");
         if (sessionKey != null && !"".equals(sessionKey)) {
             SESSION_KEY = sessionKey;

@@ -15,4 +15,6 @@ public interface SessionRepository {
     Map<String, String> get(String id);
 
     void delete(String id);
+
+    void removeByKV(String key, String value);
 }

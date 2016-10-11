@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.ScanParams;
+import redis.clients.jedis.ScanResult;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -70,5 +72,27 @@ public class RedisSessionRepository implements SessionRepository {
         } catch (Exception e) {
             LOG.error("delete session from redis exception.", e);
         }
+    }
+
+    @Override
+    public void removeByKV(String key, String value) {
+        new Thread(() -> {
+            try (Jedis jedis = pool.getResource()) {
+                ScanParams scanParams = new ScanParams();
+                scanParams.match("sessions:*");
+                String cursor = "0";
+                do {
+                    ScanResult<String> result = jedis.scan(cursor, scanParams);
+                    cursor = result.getStringCursor();
+                    result.getResult().forEach(sid -> {
+                        if (value.equals(jedis.hget(sid, key))) {
+                            jedis.del(sid);
+                        }
+                    });
+                } while (!"0".equals(cursor));
+            } catch (Exception e) {
+                LOG.error("remove session from redis exception.", e);
+            }
+        }).start();
     }
 }
